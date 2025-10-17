@@ -13,14 +13,8 @@ setup(
                      "This app is designed for scientists, researchers, and engineers who want to simulate the device physics of μTEGs, "
                      "to analyze performance metrics and optimize designs for various applications.",
     url="https://github.com/BerriesLab/mu-teg-sim",
-    readme="README.md",
     packages=find_packages(),
     keywords=["python", "thermoelectric", "physics"],
-    classifiers=[
-        "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
-        "Operating System :: OS Independent",
-    ],
     python_requires='>=3.6',
     install_requires=[],
     entry_points={
