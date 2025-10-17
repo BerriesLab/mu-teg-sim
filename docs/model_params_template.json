@@ -15,6 +15,7 @@
   "Device Design": {
     "area_p": 1e-08,
     "area_n": 1e-08,
+    "teg_area": 25e-6,
     "ff": 0.5,
     "l_min": 1e-6,
     "l_max": 1e-2,

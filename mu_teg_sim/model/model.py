@@ -16,7 +16,8 @@ class Model:
         self.e = np.zeros(n, dtype=np.float32)  # Efficiency (independent of area)
         self.r = np.zeros(n, dtype=np.float32)  # Resistance per unit area
         self.v = np.zeros(n, dtype=np.float32)  # Open circuit voltage per unit area
-        self.i = np.zeros(n, dtype=np.float32)  # Short circuit current per unit area
+        self.i_sc = np.zeros(n, dtype=np.float32)  # Short circuit current per unit area
+        self.i_cc = np.zeros(n, dtype=np.float32)  # Closed circuit current per unit area
 
     @staticmethod
     def _system_of_equation(x, a_pn, rho_pn, k_pni, ff, m, l, t_rh, t_rc, h_rh, h_rc, h_sh, h_sc):
@@ -38,7 +39,7 @@ class Model:
         The function returns [True, msg] if the solver converged, or [False, msg] if the solver does not converge."""
         # Unpack the parameters
         (a_p, a_n, s_p, s_n, k_p, k_n, k_i, h_rh, h_rc, h_sh, h_sc,  # Physical Properties
-         area_p, area_n, ff, l_min, l_max, m, t_rh, t_rc,  # Device Design
+         area_p, area_n, teg_area, ff, l_min, l_max, m, t_rh, t_rc,  # Device Design
          n_steps, log_steps, n_iter, x_tol,  # Solver
          x00, x01, x02, x03, x04, x05) = (  # Initial Conditions
             self.flatten_parameters())
@@ -51,6 +52,7 @@ class Model:
         rho_pn = (rho_p / area_p + rho_n / area_n) * (area_p + area_n)
         k_pni = (k_p * area_p + k_n * area_n + k_i * area_i) / (area_p + area_n + area_i)
         n = 1 / (area_p + area_n + area_i)
+        N = teg_area / (area_p + area_n + area_i)
 
         # Set length array
         if log_steps is True:
@@ -78,11 +80,12 @@ class Model:
             r_n = rho_n * l / area_n
             r_pn = r_p + r_n
             # Set attributes value
-            self.p[idx] = (10 ** 6 * 10 ** (-4)) * ff * a_pn ** 2 / (rho_pn * l) * m / (1 + m) ** 2 * (t_h - t_c) ** 2
+            self.p[idx] = ff * a_pn ** 2 / (rho_pn * l) * m / (1 + m) ** 2 * (t_h - t_c) ** 2
             self.e[idx] = self.p[idx] / q_h
-            self.r[idx] = 10 ** (-4) * n * r_pn
-            self.v[idx] = (10 ** 2 * 10 ** (-4)) * n * a_pn * (t_h - t_c)
-            self.i[idx] = a_pn * (t_h - t_c) / r_pn
+            self.r[idx] = n * r_pn
+            self.v[idx] = n * a_pn * (t_h - t_c)
+            self.i_sc[idx] = ff * a_pn * (t_h - t_c) / (N * rho_pn * l)
+            self.i_cc[idx] = self.i_sc[idx] * 1 / (1 + m)
         return True, f"Solver converged for all values of l."
 
     def flatten_parameters(self):
