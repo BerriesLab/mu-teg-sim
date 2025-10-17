@@ -1,5 +1,4 @@
 include README.md
-include LICENSE.md
+include LICENSE
 include CREDITS.md
-include images/*.png
-include mu_teg_sim/model/*.json
+graft images

@@ -12,4 +12,4 @@ venv/
 
 tests/
 
-releases/
+dist/*
