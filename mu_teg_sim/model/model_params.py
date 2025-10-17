@@ -25,11 +25,12 @@ class ModelParams:
                 "h_sc": self.Param(tk.DoubleVar(value=1e4), tk.DoubleVar(), "W/(m2•K)", (0, np.inf))  # Thermal coupling with environment - cold side
             },
             "Device Design": {
-                "area_p": self.Param(tk.DoubleVar(value=1e-8), tk.DoubleVar(), "m2", (0, np.inf)),  # Area of p-type leg
-                "area_n": self.Param(tk.DoubleVar(value=1e-8), tk.DoubleVar(), "m2", (0, np.inf)),  # Area of n-type leg
-                "ff": self.Param(tk.DoubleVar(value=0.5), tk.DoubleVar(), "", (0, np.inf)),  # (A_p + A_n) / (A_p + A_n + A_i), where A_i is the area of the insulator
-                "l_min": self.Param(tk.DoubleVar(value=1e-6), tk.DoubleVar(), "m", (0, np.inf)),  # Minimum length of the thermoelectric legs
-                "l_max": self.Param(tk.DoubleVar(value=1e-2), tk.DoubleVar(), "m", (0, np.inf)),  # Maximum length of the thermoelectric legs
+                "area_p": self.Param(tk.DoubleVar(value=1e-8), tk.DoubleVar(), "m2", (1e-12, np.inf)),  # Area of p-type leg
+                "area_n": self.Param(tk.DoubleVar(value=1e-8), tk.DoubleVar(), "m2", (1e-12, np.inf)),  # Area of n-type leg
+                "teg_area": self.Param(tk.DoubleVar(value=25e-6), tk.DoubleVar(), "m2", (1e-12, np.inf)),  # Device area
+                "ff": self.Param(tk.DoubleVar(value=0.5), tk.DoubleVar(), "", (1e-12, np.inf)),  # (A_p + A_n) / (A_p + A_n + A_i), where A_i is the area of the insulator
+                "l_min": self.Param(tk.DoubleVar(value=1e-6), tk.DoubleVar(), "m", (1e-12, np.inf)),  # Minimum length of the thermoelectric legs
+                "l_max": self.Param(tk.DoubleVar(value=1e-2), tk.DoubleVar(), "m", (1e-12, np.inf)),  # Maximum length of the thermoelectric legs
                 "m": self.Param(tk.DoubleVar(value=1), tk.DoubleVar(), "", (0, np.inf)),  # Device resistance to load resistance ratio (optimal = 1)
                 "t_rh": self.Param(tk.DoubleVar(value=305.0), tk.DoubleVar(), "K", (0, np.inf)),  # Temperature of the hot reservoir
                 "t_rc": self.Param(tk.DoubleVar(value=300.0), tk.DoubleVar(), "K", (0, np.inf))  # Temperature of the cold reservoir

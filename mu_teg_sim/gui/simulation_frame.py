@@ -34,14 +34,16 @@ class SimulationFrame(tk.Frame):
                               "e": tk.BooleanVar(value=True),
                               "r": tk.BooleanVar(value=False),
                               "v": tk.BooleanVar(value=False),
-                              "i": tk.BooleanVar(value=False)}
+                              "i_sc": tk.BooleanVar(value=False),
+                              "i_cc": tk.BooleanVar(value=False),}
         # Add check buttons
         tk.Checkbutton(master=btn_frame, text="Normalize", variable=self.check_buttons["n"], command=self._update_figure).pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
         tk.Checkbutton(master=btn_frame, text="Power", variable=self.check_buttons["p"], command=self._update_figure).pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
         tk.Checkbutton(master=btn_frame, text="Efficiency", variable=self.check_buttons["e"], command=self._update_figure).pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
         tk.Checkbutton(master=btn_frame, text="Resistance", variable=self.check_buttons["r"], command=self._update_figure).pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
         tk.Checkbutton(master=btn_frame, text="VOC", variable=self.check_buttons["v"], command=self._update_figure).pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
-        tk.Checkbutton(master=btn_frame, text="SSC", variable=self.check_buttons["i"], command=self._update_figure).pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
+        tk.Checkbutton(master=btn_frame, text="SSC", variable=self.check_buttons["i_sc"], command=self._update_figure).pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
+        tk.Checkbutton(master=btn_frame, text="CSC", variable=self.check_buttons["i_cc"], command=self._update_figure).pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
         btn_frame.pack()
 
     def _build_simulation_figure(self):
@@ -55,11 +57,12 @@ class SimulationFrame(tk.Frame):
         self.canvas.get_tk_widget().pack(side=tk.TOP, expand=True, fill=tk.BOTH)
         self.ax.set_xlabel("Length (m)")
         self.fig.tight_layout()
-        self.lines = {"p": self.ax.plot([], [], label=r"Power ($\mathrm{\mu W/cm^{2}}$)")[0],
+        self.lines = {"p": self.ax.plot([], [], label=r"Power ($\mathrm{W/m^{2}}$)")[0],
                       "e": self.ax.plot([], [], label="Efficiency")[0],
-                      "r": self.ax.plot([], [], label=r"Resistance ($\mathrm{\Omega/cm^2}$)")[0],
-                      "v": self.ax.plot([], [], label=r"VOC ($\mathrm{mV/cm^{2}}$)")[0],
-                      "i": self.ax.plot([], [], label=r"SSC ($\mathrm{A/cm^{2}}$)")[0]}
+                      "r": self.ax.plot([], [], label=r"Resistance ($\mathrm{\Omega/m^2}$)")[0],
+                      "v": self.ax.plot([], [], label=r"VOC ($\mathrm{V/m^{2}}$)")[0],
+                      "i_sc": self.ax.plot([], [], label=r"SSC ($\mathrm{A/m^{2}}$)")[0],
+                      "i_cc": self.ax.plot([], [], label=r"CSC ($\mathrm{A/m^{2}}$)")[0]}
         self._update_figure()
         # Add check buttons to toggle between LogX/LinX and LogY/LinY
         self.check_logx = tk.BooleanVar(value=False)
@@ -91,14 +94,15 @@ class SimulationFrame(tk.Frame):
             self.main_frame.frame_status_bar.text.set(value=f"Attention! Data not saved.")
             return
         # Save data
-        data_to_save = np.column_stack((self.model.l, self.model.p, self.model.e, self.model.r, self.model.v, self.model.i))
-        header = ("Length, Power, Efficiency, Resistance, Open Circuit Voltage, Short Circuit Current\n"
-                  "m, W/m2, #, Ohm/m2, V/m2, A/m2")
+        data_to_save = np.column_stack((self.model.l, self.model.p, self.model.e, self.model.r, self.model.v,
+                                        self.model.i_sc, self.model.i_cc))
+        header = ("Length, Power, Efficiency, Resistance, Open Circuit Voltage, Short Circuit Current, Closed Circuit Current\n"
+                  "m, W/m2, #, Ohm/m2, V/m2, A/m2, A/m2")
         try:
             np.savetxt(file_path, data_to_save, header=header, comments='', fmt='%.6e')
         except Exception:
             self.main_frame.frame_status_bar.text.set(value=f"Attention! Data not saved.")
-            return None
+            return
         self.main_frame.frame_status_bar.text.set(value=f"Data saved to {file_path}.")
 
     def _event_button_clear(self):

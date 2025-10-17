@@ -9,3 +9,7 @@ venv/
 
 # Ignore IDE configuration
 .idea/
+
+tests/
+
+releases/

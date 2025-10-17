@@ -3,7 +3,8 @@
 
 An app to simulate the device physics of micro Thermoelectric Generators (μTEGs), based on the work by **D. Beretta et
 al.**, Sustainable Energy Fuels, 2017, 1, 174-190. The app calculates the power generated, the efficiency of conversion,
-the electrical resistance, the open circuit voltage, and the short circuit current per unit area, given the device
+the electrical resistance, the open circuit voltage, the short circuit 
+current and the closed circuit current per unit area, given the device
 design and the physical properties of materials.
 
 This app is designed for scientists, researchers, and engineers who want to simulate the device physics of μTEGs, to
@@ -91,6 +92,8 @@ The main window of the app consists of three primary frames:
     - **Resistance**: Shows or hides the device resistance per unit area vs. length.
     - **VOC**: Shows or hides the open circuit voltage per unit area vs. length.
     - **SCC**: Shows or hides the short circuit current per unit area vs. length.
+    - **CSC**: Shows or hides the closed circuit current per unit area vs. 
+      length.
     - **LogX**: Switches the x-axis between linear and logarithmic scales.
     - **LogY**: Switches the y-axis between linear and logarithmic scales.
 
@@ -128,16 +131,17 @@ Tab 1 - **Model Params**: Physical Properties
 
 Tab 1 - **Model Params**: Device Design
 
-| Parameter | Description                                    | Units | Type  | Default Value | Valid Values |
-|-----------|------------------------------------------------|-------|-------|---------------|--------------|
-| area_p    | Area of p-type leg                             | m²    | float | 1e-8          | [-∞, ∞]      |
-| area_n    | Area of n-type leg                             | m²    | float | 1e-8          | [-∞, ∞]      |   
-| ff        | (area_p + area_n) / (area_p + area_n + area_i) |       | float | 0.5           | [0, ∞]       |
-| l_min     | Minimum length of the thermoelectric legs      | m     | float | 1e-6          | [0, ∞]       |
-| l_max     | Maximum length of the thermoelectric legs      | m     | float | 1e-2          | [0, ∞]       |
-| m         | Device to load resistance ratio (optimal = 1)  |       | float | 1             | [0, ∞]       |
-| t_rh      | Temperature of the hot reservoir               | K     | float | 305           | [0, ∞]       |
-| t_rc      | Temperature of the cold reservoir              | K     | float | 300           | [0, ∞]       |
+| Parameter | Description                                    | Units | Type  | Default Value | Valid Values  |
+|-----------|------------------------------------------------|-------|-------|---------------|---------------|
+| area_p    | Area of p-type leg                             | m²    | float | 1e-8          | [1e-12, ∞]    |
+| area_n    | Area of n-type leg                             | m²    | float | 1e-8          | [1e-12, ∞]    |
+| teg_area  | Device area                                    | m²    | float | 25e-6         | [1e-12, ∞]    |
+| ff        | (area_p + area_n) / (area_p + area_n + area_i) |       | float | 0.5           | [1e-12, ∞]    |
+| l_min     | Minimum length of the thermoelectric legs      | m     | float | 1e-6          | [1e-12, ∞]    |
+| l_max     | Maximum length of the thermoelectric legs      | m     | float | 1e-2          | [0, ∞]        |
+| m         | Device to load resistance ratio (optimal = 1)  |       | float | 1             | [0, ∞]        |
+| t_rh      | Temperature of the hot reservoir               | K     | float | 305           | [0, ∞]        |
+| t_rc      | Temperature of the cold reservoir              | K     | float | 300           | [0, ∞]        |
 
 Tab 2 - **Simulation Params**: Solver
 
@@ -209,6 +213,7 @@ Please note that all values are saved in SI units.
   "Device Design": {
     "area_p": 1e-08,
     "area_n": 1e-08,
+    "teg_area": 25e-6,
     "ff": 0.5,
     "l_min": 1e-6,
     "l_max": 1e-2,
