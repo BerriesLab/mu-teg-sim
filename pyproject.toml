@@ -1,11 +1,11 @@
 # pyproject.toml
 
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools >= 77.0.3"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "mu_teg_sim"
+name = "mu-teg-sim"
 version = "1.0.1"
 authors = [
   { name="Davide Beretta", email="mail.davide.beretta+github@gmail.com" },
@@ -13,12 +13,13 @@ authors = [
 description = "An app to simulate the device physics of micro Thermoelectric Generators"
 readme = "README.md"
 requires-python = ">=3.6"
-keywords = ["python", "thermoelectric", "physics"]
-dependencies = []
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
 
 [project.urls]
 "Homepage" = "https://github.com/BerriesLab/mu-teg-sim"
-"Bug Tracker" = "https://github.com/BerriesLab/mu-teg-sim/issues"
 
 [project.scripts]
 mu_teg_sim = "mu_teg_sim.cli.cli:main"
